@@ -1,8 +1,8 @@
 # Privacy Scanner
 
-Compiler course, homework 1 bonus. A character-based scanner for email addresses,
-Iranian mobile numbers, and IPv4 addresses. Uses Python 3.10+ and the standard
-library. No installation is needed.
+A character-based scanner that redacts email addresses, Iranian mobile numbers,
+and IPv4 addresses from text files. Uses Python 3.10+ and the standard library.
+No installation is needed.
 
 ## Run
 
@@ -33,8 +33,7 @@ never extracted. Trailing periods and all separators are preserved.
 - **IPv4:** four decimal octets from 0 to 255, with no leading zeros.
 
 LF and CRLF line endings are preserved. A standalone CR counts as an ordinary
-character. Following the detailed specification, the introductory example's
-newlines are preserved, and each report entry's `type` is a string.
+character.
 
 Scanning takes O(n) time and O(n) memory for n input characters. The input,
 sanitized text, and findings are held in memory.
