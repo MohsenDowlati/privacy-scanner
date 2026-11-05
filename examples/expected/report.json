@@ -1,0 +1,23 @@
+{
+  "total_detected": 3,
+  "findings": [
+    {
+      "type": "EMAIL",
+      "line": 1,
+      "column": 9,
+      "length": 15
+    },
+    {
+      "type": "PHONE",
+      "line": 2,
+      "column": 8,
+      "length": 11
+    },
+    {
+      "type": "IP",
+      "line": 3,
+      "column": 5,
+      "length": 12
+    }
+  ]
+}
