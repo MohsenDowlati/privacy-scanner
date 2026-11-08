@@ -5,10 +5,8 @@ import tempfile
 import unittest
 from dataclasses import asdict
 from pathlib import Path
-import os
 
 from privacy_scanner import Finding, scan
-
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "privacy_scanner.py"
@@ -285,6 +283,7 @@ class CommandLineTests(unittest.TestCase):
             cwd=self.directory,
             capture_output=True,
             text=True,
+            check=False,
         )
 
     def test_writes_exactly_two_files_and_preserves_bytes(self):

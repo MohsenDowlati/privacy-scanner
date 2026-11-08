@@ -5,7 +5,6 @@ from itertools import combinations
 from pathlib import Path
 from string import ascii_letters, digits
 
-
 CANDIDATE_CHARACTERS = frozenset(ascii_letters + digits + ".-_@")
 
 
