@@ -1,10 +1,12 @@
 # Privacy Scanner
+[![CI](https://github.com/MohsenDowlati/privacy-scanner/actions/workflows/ci.yml/badge.svg)](https://github.com/MohsenDowlati/privacy-scanner/actions/workflows/ci.yml)
+
 
 A character-based scanner that redacts email addresses, Iranian mobile numbers,
 and IPv4 addresses from text files. Uses Python 3.10+ and the standard library.
 No installation is needed.
 
-## Run
+## 🌐 Run
 
 ```sh
 python3 privacy_scanner.py examples/input.txt --output-dir output
@@ -19,7 +21,7 @@ The JSON report lists detections in source order with their type, original line,
 column, and length. Lines and columns start at 1. Tabs count as one character;
 lengths and columns count Unicode characters, not bytes.
 
-## Scanning rules
+## 🗣️ Scanning rules
 
 The scanner reads maximal candidates containing `A-Z`, `a-z`, `0-9`, `.`, `-`,
 `_`, or `@`. It sets aside trailing periods, then validates the entire remaining
@@ -38,7 +40,7 @@ character.
 Scanning takes O(n) time and O(n) memory for n input characters. The input,
 sanitized text, and findings are held in memory.
 
-## Tests
+## 🔧 Tests
 
 ```sh
 python3 -m unittest discover -s tests -v
@@ -47,3 +49,10 @@ python3 -m unittest discover -s tests -v
 Tests cover validation, candidate boundaries, punctuation, Unicode, source
 positions, line endings, and file execution. Expected outputs for the example
 are in `examples/expected/`.
+
+## 🔨 My Contributions
+- Added a CI workflow that runs tests across Ubuntu, macOS, and Windows with Python 3.10–3.13.
+- Added project packaging metadata and the privacy-scanner console-script entry point, with checks for editable installation and `pipx` installation.
+- Added CI checks for linting, security analysis, and package builds.
+- Improved test portability on Windows by skipping symlink tests when symlink creation is unavailable, and made the subprocess.run test behavior explicit for Ruff.
+text
