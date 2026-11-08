@@ -5,12 +5,28 @@ import tempfile
 import unittest
 from dataclasses import asdict
 from pathlib import Path
+import os
 
 from privacy_scanner import Finding, scan
 
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "privacy_scanner.py"
+
+
+def _can_symlink() -> bool:
+    with tempfile.TemporaryDirectory() as temp_dir:
+        target = Path(temp_dir) / "target"
+        link = Path(temp_dir) / "link"
+        target.touch()
+        try:
+            link.symlink_to(target)
+            return True
+        except OSError:
+            return False
+
+SUPPORTS_SYMLINKS = _can_symlink()
+
 
 
 class ScannerTests(unittest.TestCase):
@@ -341,6 +357,7 @@ class CommandLineTests(unittest.TestCase):
                 self.assertIn("must be distinct", result.stderr)
                 self.assertEqual(source.read_bytes(), b"ali@example.com")
 
+    @unittest.skipUnless(SUPPORTS_SYMLINKS, "Symbolic links not supported or lack required privileges")
     def test_output_symlink_cannot_overwrite_input(self):
         self.input.write_bytes(b"ali@example.com")
         (self.directory / "sanitized.txt").symlink_to(self.input)
@@ -355,6 +372,7 @@ class CommandLineTests(unittest.TestCase):
         self.assertNotEqual(result.returncode, 0)
         self.assertEqual(self.input.read_bytes(), b"ali@example.com")
 
+    @unittest.skipUnless(SUPPORTS_SYMLINKS, "Symbolic links not supported or lack required privileges")
     def test_output_files_cannot_alias_each_other(self):
         self.input.write_bytes(b"ali@example.com")
         sanitized = self.directory / "sanitized.txt"
