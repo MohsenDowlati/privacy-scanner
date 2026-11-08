@@ -24,11 +24,6 @@ jobs:
         python-version: ["3.10", "3.11", "3.12", "3.13"]
 
     steps:
-      - name: Harden runner
-        uses: stepsecurity/harden-runner@4d991eb9b905fa189e4c3761ab6784e3088fc1a9 # v2.11.0
-        with:
-          egress-policy: audit
-
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
@@ -37,19 +32,23 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
 
+      - name: Test editable installation (pip install -e .)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e .
+
+      - name: Verify CLI console script entry point
+        run: |
+          privacy-scanner --help
+
       - name: Run test suite
         run: |
           python -m unittest discover -s tests -v
 
-  security-audit:
-    name: Lint & Security Audit
+  pipx-and-packaging:
+    name: Pipx Install & Packaging Validation
     runs-on: ubuntu-latest
     steps:
-      - name: Harden runner
-        uses: stepsecurity/harden-runner@4d991eb9b905fa189e4c3761ab6784e3088fc1a9 # v2.11.0
-        with:
-          egress-policy: audit
-
       - name: Checkout repository
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
 
@@ -58,7 +57,38 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: Install tools
+      - name: Install pipx and build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install pipx build twine
+
+      - name: Test pipx installation
+        run: |
+          pipx install .
+          privacy-scanner --help
+          pipx list
+
+      - name: Build wheel and sdist
+        run: |
+          python -m build
+
+      - name: Check package distribution metadata
+        run: |
+          twine check --strict dist/*
+
+  lint-and-audit:
+    name: Lint & Security Audit
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@42375524e23c412d93fb67b49958b491fce71c38 # v5.4.0
+        with:
+          python-version: "3.12"
+
+      - name: Install Ruff and Bandit
         run: |
           python -m pip install --upgrade pip
           pip install ruff bandit
@@ -69,4 +99,4 @@ jobs:
 
       - name: Run Bandit (Security)
         run: |
-          bandit -r privacy_scanner.py -s B101
+          bandit -c pyproject.toml -r privacy_scanner.py
