@@ -31,7 +31,7 @@ def _is_email(candidate: str) -> bool:
     local, domain = candidate.split("@")
     for part in local.split("."):
         if not part or not (
-            _is_ascii_alphanumeric(part[0]) and _is_ascii_alphanumeric(part[-1])
+                _is_ascii_alphanumeric(part[0]) and _is_ascii_alphanumeric(part[-1])
         ):
             return False
         if any(not (_is_ascii_alphanumeric(c) or c in "-_") for c in part):
@@ -42,7 +42,7 @@ def _is_email(candidate: str) -> bool:
         return False
     for label in labels:
         if not label or not (
-            _is_ascii_alphanumeric(label[0]) and _is_ascii_alphanumeric(label[-1])
+                _is_ascii_alphanumeric(label[0]) and _is_ascii_alphanumeric(label[-1])
         ):
             return False
         if any(not (_is_ascii_alphanumeric(c) or c == "-") for c in label):
@@ -54,10 +54,10 @@ def _is_email(candidate: str) -> bool:
 
 def _is_phone(candidate: str) -> bool:
     return (
-        len(candidate) == 11
-        and candidate.startswith("09")
-        and candidate.isascii()
-        and candidate.isdigit()
+            len(candidate) == 11
+            and candidate.startswith("09")
+            and candidate.isascii()
+            and candidate.isdigit()
     )
 
 
@@ -85,7 +85,7 @@ def _classify(candidate: str) -> str | None:
     return None
 
 
-def scan(text: str, start_line: int=1) -> tuple[str, list[Finding]]:
+def scan(text: str, start_line: int = 1) -> tuple[str, list[Finding]]:
     output: list[str] = []
     findings: list[Finding] = []
     index = 0
@@ -115,7 +115,7 @@ def scan(text: str, start_line: int=1) -> tuple[str, list[Finding]]:
             output.append(candidate)
         else:
             output.append(f"[{kind}]")
-            output.append(candidate[len(value) :])
+            output.append(candidate[len(value):])
             findings.append(Finding(kind, line, column, len(value)))
         column += len(candidate)
 
@@ -160,8 +160,8 @@ def _configure_stdio() -> None:
             line_buffering=True,
         )
 
-def _is_closed_pipe(error: OSError) -> bool:
 
+def _is_closed_pipe(error: OSError) -> bool:
     return isinstance(error, BrokenPipeError) or (
             os.name == "nt" and error.errno == errno.EINVAL
     )

@@ -8,6 +8,7 @@ import threading
 import unittest
 from dataclasses import asdict
 from pathlib import Path
+from typing import ClassVar
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "privacy_scanner.py"
@@ -41,47 +42,47 @@ class ScannerTests(unittest.TestCase):
 
     def test_valid_emails(self):
         for value in (
-            "a@b.co",
-            "1@2.ab",
-            "ali@example.com",
-            "ALI@EXAMPLE.COM",
-            "a-b_c.d2@sub-domain.example.technology",
-            "a__b@1.2.ab",
-            "0.1@0-1.ir",
+                "a@b.co",
+                "1@2.ab",
+                "ali@example.com",
+                "ALI@EXAMPLE.COM",
+                "a-b_c.d2@sub-domain.example.technology",
+                "a__b@1.2.ab",
+                "0.1@0-1.ir",
         ):
             with self.subTest(value=value):
                 self.assert_detected(value, "EMAIL")
 
     def test_invalid_emails(self):
         for value in (
-            "@example.com",
-            "ali@",
-            "ali.example.com",
-            "ali@@example.com",
-            ".ali@example.com",
-            "ali.@example.com",
-            "ali..reza@example.com",
-            "-ali@example.com",
-            "_ali@example.com",
-            "ali-@example.com",
-            "ali_@example.com",
-            "a.-b@example.com",
-            "a.b-@example.com",
-            "a._b@example.com",
-            "a.b_@example.com",
-            "ali@example",
-            "ali@.example.com",
-            "ali@example..com",
-            "ali@-example.com",
-            "ali@example-.com",
-            "ali@exam_ple.com",
-            "ali@example.c",
-            "ali@example.c0m",
-            "ali@example.12",
-            "ali@example.c-m",
-            "ali@example.com-",
-            "ali@example.com_",
-            "ali@example.com@",
+                "@example.com",
+                "ali@",
+                "ali.example.com",
+                "ali@@example.com",
+                ".ali@example.com",
+                "ali.@example.com",
+                "ali..reza@example.com",
+                "-ali@example.com",
+                "_ali@example.com",
+                "ali-@example.com",
+                "ali_@example.com",
+                "a.-b@example.com",
+                "a.b-@example.com",
+                "a._b@example.com",
+                "a.b_@example.com",
+                "ali@example",
+                "ali@.example.com",
+                "ali@example..com",
+                "ali@-example.com",
+                "ali@example-.com",
+                "ali@exam_ple.com",
+                "ali@example.c",
+                "ali@example.c0m",
+                "ali@example.12",
+                "ali@example.c-m",
+                "ali@example.com-",
+                "ali@example.com_",
+                "ali@example.com@",
         ):
             with self.subTest(value=value):
                 self.assertEqual(scan(value), (value, []))
@@ -93,73 +94,73 @@ class ScannerTests(unittest.TestCase):
 
     def test_invalid_phones(self):
         for value in (
-            "0912345678",
-            "091234567890",
-            "08123456789",
-            "109123456789",
-            "989123456789",
-            "+989123456789",
-            "00989123456789",
-            "abc09123456789",
-            "09123456789abc",
-            "_09123456789",
-            "09123456789-",
-            "09123-456789",
-            "0912 3456789",
-            "09(123)456789",
-            "۰۹۱۲۳۴۵۶۷۸۹",
-            "٠٩١٢٣٤٥٦٧٨٩",
-            "09۱۲۳۴۵۶۷۸۹",
+                "0912345678",
+                "091234567890",
+                "08123456789",
+                "109123456789",
+                "989123456789",
+                "+989123456789",
+                "00989123456789",
+                "abc09123456789",
+                "09123456789abc",
+                "_09123456789",
+                "09123456789-",
+                "09123-456789",
+                "0912 3456789",
+                "09(123)456789",
+                "۰۹۱۲۳۴۵۶۷۸۹",
+                "٠٩١٢٣٤٥٦٧٨٩",
+                "09۱۲۳۴۵۶۷۸۹",
         ):
             with self.subTest(value=value):
                 self.assertEqual(scan(value), (value, []))
 
     def test_valid_ipv4_addresses(self):
         for value in (
-            "0.0.0.0",
-            "255.255.255.255",
-            "192.168.1.15",
-            "1.10.100.0",
-            "127.0.0.1",
+                "0.0.0.0",
+                "255.255.255.255",
+                "192.168.1.15",
+                "1.10.100.0",
+                "127.0.0.1",
         ):
             with self.subTest(value=value):
                 self.assert_detected(value, "IP")
 
     def test_invalid_ipv4_addresses(self):
         for value in (
-            "256.1.1.1",
-            "1.256.1.1",
-            "1.1.256.1",
-            "1.1.1.256",
-            "999.168.1.15",
-            "01.2.3.4",
-            "1.02.3.4",
-            "1.2.03.4",
-            "1.2.3.04",
-            "000.0.0.0",
-            "1234.1.1.1",
-            "1.1.1.1234",
-            "1.2.3",
-            "192.168.1.15.30",
-            ".192.168.1.15",
-            "192..168.1.15",
-            "192.168.1..15",
-            "-1.2.3.4",
-            "x192.168.1.15",
-            "192.168.1.15x",
-            "192.168.1.15_",
-            "192.168.1.15@",
-            "۱۹۲.۱۶۸.۱.۱۵",
-            "١٩٢.١٦٨.١.١٥",
+                "256.1.1.1",
+                "1.256.1.1",
+                "1.1.256.1",
+                "1.1.1.256",
+                "999.168.1.15",
+                "01.2.3.4",
+                "1.02.3.4",
+                "1.2.03.4",
+                "1.2.3.04",
+                "000.0.0.0",
+                "1234.1.1.1",
+                "1.1.1.1234",
+                "1.2.3",
+                "192.168.1.15.30",
+                ".192.168.1.15",
+                "192..168.1.15",
+                "192.168.1..15",
+                "-1.2.3.4",
+                "x192.168.1.15",
+                "192.168.1.15x",
+                "192.168.1.15_",
+                "192.168.1.15@",
+                "۱۹۲.۱۶۸.۱.۱۵",
+                "١٩٢.١٦٨.١.١٥",
         ):
             with self.subTest(value=value):
                 self.assertEqual(scan(value), (value, []))
 
     def test_trailing_periods(self):
         for value, kind in (
-            ("ali@example.com", "EMAIL"),
-            ("09123456789", "PHONE"),
-            ("192.168.1.15", "IP"),
+                ("ali@example.com", "EMAIL"),
+                ("09123456789", "PHONE"),
+                ("192.168.1.15", "IP"),
         ):
             for suffix in (".", "..", "..."):
                 with self.subTest(value=value, suffix=suffix):
@@ -170,13 +171,13 @@ class ScannerTests(unittest.TestCase):
 
     def test_invalid_candidates_keep_trailing_periods(self):
         for value in (
-            ".",
-            "...",
-            ".ali@example.com...",
-            "ali..reza@example.com.",
-            "999.168.1.15...",
-            "192.168.1.15.30..",
-            "abc09123456789.",
+                ".",
+                "...",
+                ".ali@example.com...",
+                "ali..reza@example.com.",
+                "999.168.1.15...",
+                "192.168.1.15.30..",
+                "abc09123456789.",
         ):
             with self.subTest(value=value):
                 self.assertEqual(scan(value), (value, []))
@@ -435,11 +436,13 @@ class ScanStreamTests(unittest.TestCase):
 
 
 class StdioTests(unittest.TestCase):
-    """`privacy_scanner.py -` streams stdin to stdout on every OS."""
-
     # Simulates a legacy Windows console: non-UTF-8 code page, no UTF-8 mode.
     # The script must not depend on the environment's default encoding.
-    ENV = {**os.environ, "PYTHONIOENCODING": "cp1252", "PYTHONUTF8": "0"}
+    ENV: ClassVar[dict[str, str]] = {
+        **os.environ,
+        "PYTHONIOENCODING": "cp1252",
+        "PYTHONUTF8": "0",
+    }
 
     SAMPLE = (
         "سلام\tali@example.com.\r\n"
