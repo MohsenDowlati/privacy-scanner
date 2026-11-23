@@ -1,5 +1,5 @@
 # Privacy Scanner
-[![CI](https://github.com/MohsenDowlati/privacy-scanner/actions/workflows/ci.yaml/badge.svg)](https://github.com/MohsenDowlati/privacy-scanner/actions/workflows/ci.yaml)
+[![CI](https://github.com/ykazemim/privacy-scanner/actions/workflows/ci.yaml/badge.svg)](https://github.ykazemim/privacy-scanner/actions/workflows/ci.yaml)
 
 
 A character-based scanner that redacts email addresses, Iranian mobile numbers,
@@ -87,6 +87,4 @@ positions, line endings, file execution, and stdin/stdout streaming (including l
 - Added a CI workflow that runs tests across Ubuntu, macOS, and Windows with Python 3.10–3.13.
 - Added project packaging metadata and the privacy-scanner console-script entry point, with checks for editable installation and `pipx` installation.
 - Added CI checks for linting, security analysis, and package builds.
-- Improved test portability on Windows by skipping symlink tests when symlink creation is unavailable, and made the subprocess.run test behavior explicit for Ruff.
-text
 - Added `-` support for streaming stdin to stdout, with UTF-8, newline, and broken-pipe handling that behaves the same on Ubuntu, macOS, and Windows, plus tests for it.
